@@ -18,15 +18,38 @@ enum StatementType {
 
 class Statement {
 public:
-    StatementType type;
-    Statement(const std::string& input) : src(input) {}
+    Statement() : src(), type(NONE) {}
     std::string_view Source();
+    StatementType Type();
+    PrepareResult Prepare(const std::string& input);
 private:
     std::string src;
+    StatementType type;
 };
 
 std::string_view Statement::Source() {
     return std::string_view(this->src);
+}
+
+StatementType Statement::Type() {
+    return this->type;
+}
+
+PrepareResult Statement::Prepare(const std::string& input) {
+    this->src = std::string_view(input);
+    if (this->src.starts_with("insert")) {
+        this->type = INSERT;
+    } else if (this->src.starts_with("select")) {
+        this->type = SELECT;
+    } else if (this->src.starts_with("update")) {
+        this->type = UPDATE;
+    } else if (this->src.starts_with("delete")) {
+        this->type = DELETE;
+    } else {
+        this->type = NONE;
+        return PREPARE_UNRECOGNIZED;
+    }
+    return PREPARE_SUCCESS;
 }
 
 void PrintPrompt() {
@@ -46,24 +69,8 @@ CommandResult DoCommand(std::string& input) {
     return COMMAND_SUCCESS;   
 }
 
-PrepareResult PrepareStatement(Statement& stmt) {
-    if (stmt.Source().starts_with("insert")) {
-        stmt.type = INSERT;
-    } else if (stmt.Source().starts_with("select")) {
-        stmt.type = SELECT;
-    } else if (stmt.Source().starts_with("update")) {
-        stmt.type = UPDATE;
-    } else if (stmt.Source().starts_with("delete")) {
-        stmt.type = DELETE;
-    } else {
-        stmt.type = NONE;
-        return PREPARE_UNRECOGNIZED;
-    }
-    return PREPARE_SUCCESS;
-}
-
 void ExecuteStatement(Statement& stmt) {
-    switch (stmt.type) {
+    switch (stmt.Type()) {
     case INSERT:
         std::cout << "insert xxx" << std::endl;
         break;
@@ -95,8 +102,8 @@ int main() {
                 break;
             }
         } else {
-            Statement stmt(input);
-            switch (PrepareStatement(stmt)) {
+            Statement stmt;
+            switch (stmt.Prepare(input)) {
             case PREPARE_SUCCESS:
                 ExecuteStatement(stmt);
                 break;
