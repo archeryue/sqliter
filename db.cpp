@@ -17,11 +17,11 @@ enum StatementType {
 };
 
 class Statement {
- public:
+public:
     StatementType type;
     Statement(const std::string& input) : src(input) {}
     std::string_view Source();
- private:
+private:
     std::string src;
 };
 
