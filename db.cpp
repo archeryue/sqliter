@@ -64,20 +64,20 @@ PrepareResult PrepareStatement(Statement& statement) {
 
 void ExecuteStatement(Statement& statement) {
     switch (statement.type) {
-        case INSERT:
-            std::cout << "insert xxx" << std::endl;
-            break;
-        case SELECT:
-            std::cout << "select xxx" << std::endl;
-            break;
-        case UPDATE:
-            std::cout << "update xxx" << std::endl;
-            break;
-        case DELETE:
-            std::cout << "delete xxx" << std::endl;
-            break;
-        default:
-            std::cout << "error." << std::endl;
+    case INSERT:
+        std::cout << "insert xxx" << std::endl;
+        break;
+    case SELECT:
+        std::cout << "select xxx" << std::endl;
+        break;
+    case UPDATE:
+        std::cout << "update xxx" << std::endl;
+        break;
+    case DELETE:
+        std::cout << "delete xxx" << std::endl;
+        break;
+    default:
+        std::cout << "error." << std::endl;
     }
 }
 
@@ -88,21 +88,21 @@ int main() {
         ReadInput(input);
         if (input[0] == '.') {
             switch (DoCommand(input)) {
-                case COMMAND_SUCCESS:
-                    break;
-                case COMMAND_UNRECOGNIZED:
-                    std::cout << "unrecognized command" << std::endl;
-                    break;
+            case COMMAND_SUCCESS:
+                break;
+            case COMMAND_UNRECOGNIZED:
+                std::cout << "unrecognized command" << std::endl;
+                break;
             }
         } else {
             Statement statement(input);
             switch (PrepareStatement(statement)) {
-                case PREPARE_SUCCESS:
-                    ExecuteStatement(statement);
-                    break;
-                case PREPARE_UNRECOGNIZED:
-                    std::cout << "unrecognized statement" << std::endl;
-                    break;
+            case PREPARE_SUCCESS:
+                ExecuteStatement(statement);
+                break;
+            case PREPARE_UNRECOGNIZED:
+                std::cout << "unrecognized statement" << std::endl;
+                break;
             }
         }
         input.clear();
