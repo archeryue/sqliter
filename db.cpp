@@ -46,24 +46,24 @@ CommandResult DoCommand(std::string& input) {
     return COMMAND_SUCCESS;   
 }
 
-PrepareResult PrepareStatement(Statement& statement) {
-    if (statement.Source().starts_with("insert")) {
-        statement.type = INSERT;
-    } else if (statement.Source().starts_with("select")) {
-        statement.type = SELECT;
-    } else if (statement.Source().starts_with("update")) {
-        statement.type = UPDATE;
-    } else if (statement.Source().starts_with("delete")) {
-        statement.type = DELETE;
+PrepareResult PrepareStatement(Statement& stmt) {
+    if (stmt.Source().starts_with("insert")) {
+        stmt.type = INSERT;
+    } else if (stmt.Source().starts_with("select")) {
+        stmt.type = SELECT;
+    } else if (stmt.Source().starts_with("update")) {
+        stmt.type = UPDATE;
+    } else if (stmt.Source().starts_with("delete")) {
+        stmt.type = DELETE;
     } else {
-        statement.type = NONE;
+        stmt.type = NONE;
         return PREPARE_UNRECOGNIZED;
     }
     return PREPARE_SUCCESS;
 }
 
-void ExecuteStatement(Statement& statement) {
-    switch (statement.type) {
+void ExecuteStatement(Statement& stmt) {
+    switch (stmt.type) {
     case INSERT:
         std::cout << "insert xxx" << std::endl;
         break;
@@ -95,10 +95,10 @@ int main() {
                 break;
             }
         } else {
-            Statement statement(input);
-            switch (PrepareStatement(statement)) {
+            Statement stmt(input);
+            switch (PrepareStatement(stmt)) {
             case PREPARE_SUCCESS:
-                ExecuteStatement(statement);
+                ExecuteStatement(stmt);
                 break;
             case PREPARE_UNRECOGNIZED:
                 std::cout << "unrecognized statement" << std::endl;
