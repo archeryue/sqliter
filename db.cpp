@@ -1,12 +1,17 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "statement.h"
+#include "table.h"
 
 enum CommandResult {
     COMMAND_SUCCESS,
     COMMAND_UNRECOGNIZED
 };
+
+std::vector<Table> tables;
 
 void PrintPrompt() {
     std::cout << "sqliter> ";
@@ -19,6 +24,9 @@ void ReadInput(std::string& input) {
 CommandResult DoCommand(std::string& input) {
     if (input == ".exit") {
         exit(0);
+    } else if (input == ".table") {
+        std::for_each(tables.begin(), tables.end(), [](Table& e) {std::cout << e.Name() << " ";});
+        std::cout << std::endl;
     } else {
         return COMMAND_UNRECOGNIZED;
     }
@@ -27,6 +35,9 @@ CommandResult DoCommand(std::string& input) {
 
 void ExecuteStatement(Statement& stmt) {
     switch (stmt.Type()) {
+    case CREATE:
+        std::cout << "create xxx" << std::endl;
+        break;
     case INSERT:
         std::cout << "insert xxx" << std::endl;
         break;

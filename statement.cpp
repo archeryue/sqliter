@@ -3,7 +3,9 @@
 PrepareResult Statement::Prepare(const std::string& input) {
     this->src = input;
     std::string_view sv = Source();
-    if (sv.starts_with("insert")) {
+    if (sv.starts_with("create")) {
+        this->type = CREATE;
+    } else if (sv.starts_with("insert")) {
         this->type = INSERT;
     } else if (sv.starts_with("select")) {
         this->type = SELECT;

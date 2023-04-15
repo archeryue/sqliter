@@ -4,24 +4,27 @@
 #include <string>
 #include <string_view>
 
+#include "table.h"
+
 enum PrepareResult {
     PREPARE_SUCCESS,
     PREPARE_UNRECOGNIZED
 };
 
 enum StatementType {
-    NONE, INSERT, SELECT, UPDATE, DELETE
+    NONE, CREATE, INSERT, SELECT, UPDATE, DELETE
 };
 
 class Statement {
 public:
-    Statement() : src(), type(NONE) {}
+    Statement() : src(), type(NONE), table(nullptr) {}
     std::string_view Source();
     StatementType Type();
     PrepareResult Prepare(const std::string& input);
 private:
     std::string src;
     StatementType type;
+    Table* table;
 };
 
 #endif
