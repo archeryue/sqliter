@@ -1,56 +1,12 @@
 #include <iostream>
-#include <string_view>
 #include <string>
+
+#include "statement.h"
 
 enum CommandResult {
     COMMAND_SUCCESS,
     COMMAND_UNRECOGNIZED
 };
-
-enum PrepareResult {
-    PREPARE_SUCCESS,
-    PREPARE_UNRECOGNIZED
-};
-
-enum StatementType {
-    NONE, INSERT, SELECT, UPDATE, DELETE
-};
-
-class Statement {
-public:
-    Statement() : src(), type(NONE) {}
-    std::string_view Source();
-    StatementType Type();
-    PrepareResult Prepare(const std::string& input);
-private:
-    std::string src;
-    StatementType type;
-};
-
-std::string_view Statement::Source() {
-    return std::string_view(this->src);
-}
-
-StatementType Statement::Type() {
-    return this->type;
-}
-
-PrepareResult Statement::Prepare(const std::string& input) {
-    this->src = std::string_view(input);
-    if (this->src.starts_with("insert")) {
-        this->type = INSERT;
-    } else if (this->src.starts_with("select")) {
-        this->type = SELECT;
-    } else if (this->src.starts_with("update")) {
-        this->type = UPDATE;
-    } else if (this->src.starts_with("delete")) {
-        this->type = DELETE;
-    } else {
-        this->type = NONE;
-        return PREPARE_UNRECOGNIZED;
-    }
-    return PREPARE_SUCCESS;
-}
 
 void PrintPrompt() {
     std::cout << "sqliter> ";
