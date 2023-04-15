@@ -20,6 +20,7 @@ public:
     Statement() : src(), type(NONE), table(nullptr) {}
     std::string_view Source();
     StatementType Type();
+    Table* _Table();
     PrepareResult Prepare(const std::string& input);
 private:
     std::string src;

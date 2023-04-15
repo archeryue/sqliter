@@ -10,26 +10,35 @@
 enum DataType {
     INT,
     DOUBLE,
-    CHAR32,
-    TEXT
+    CHAR32
 };
 
 enum CmpType {
     EQ,
     GT,
-    LT,
-    GE,
-    LE
+    LT
 };
+
+class Column {
+public:
+    Column(std::string name, DataType type) : name(name), type(type) {}
+    std::string_view Name() const;
+    DataType Type() const;
+private:
+    std::string name;
+    DataType type;
+};
+
+std::vector<Column> ParseColumn(std::string_view column_def);
 
 class Table {
 public:
-    Table(std::string name, std::vector<DataType> def) : name(name), def(def) {}
+    Table(std::string name, std::vector<Column>& columns) : name(name), columns(columns) {}
     std::string_view Name();
-    const std::vector<DataType>& Def();
+    const std::vector<Column>& Columns();
 private:
     std::string name;
-    std::vector<DataType> def;
+    std::vector<Column> columns;
     std::string file;
 };
 
@@ -43,7 +52,7 @@ private:
 class Condition {
 private:
     Table* table;
-    std::size_t def_idx;
+    std::size_t column_idx;
     CmpType cmp_type;
     std::string cmp_val;
 };

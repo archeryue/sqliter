@@ -25,7 +25,7 @@ CommandResult DoCommand(std::string& input) {
     if (input == ".exit") {
         exit(0);
     } else if (input == ".table") {
-        std::for_each(tables.begin(), tables.end(), [](Table& e) {std::cout << e.Name() << " ";});
+        std::for_each(tables.begin(), tables.end(), [](auto& e) {std::cout << e.Name() << " ";});
         std::cout << std::endl;
     } else {
         return COMMAND_UNRECOGNIZED;
@@ -35,8 +35,13 @@ CommandResult DoCommand(std::string& input) {
 
 void ExecuteStatement(Statement& stmt) {
     switch (stmt.Type()) {
-    case CREATE:
-        std::cout << "create xxx" << std::endl;
+    case CREATE: 
+        {
+            std::cout << "create " << stmt._Table()->Name() << " ";
+            const std::vector<Column>& columns = stmt._Table()->Columns();
+            std::for_each(columns.cbegin(), columns.cend(), [](auto& e) {std::cout << e.Name() << " ";});
+            std::cout << std::endl;
+        }
         break;
     case INSERT:
         std::cout << "insert xxx" << std::endl;
