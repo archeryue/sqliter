@@ -21,12 +21,16 @@ void ReadInput(std::string& input) {
     std::getline(std::cin, input);
 }
 
+void PrintTables() {
+    std::for_each(tables.begin(), tables.end(), [](auto& e) {std::cout << e.Name() << " ";});
+    std::cout << std::endl;
+}
+
 CommandResult DoCommand(std::string& input) {
     if (input == ".exit") {
         exit(0);
     } else if (input == ".table") {
-        std::for_each(tables.begin(), tables.end(), [](auto& e) {std::cout << e.Name() << " ";});
-        std::cout << std::endl;
+        PrintTables();
     } else {
         return COMMAND_UNRECOGNIZED;
     }
