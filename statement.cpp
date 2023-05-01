@@ -25,9 +25,11 @@ PrepareResult Statement::Prepare(const std::string& input) {
         this->type = INSERT;
     } else if (sv.starts_with("select")) {
         // select * from xxx where age > 30;
+        // select * from xxx where id > 1 and age > 30;
         this->type = SELECT;
     } else if (sv.starts_with("update")) {
         // update xxx set age = 31 where name = "archer";
+        // update xxx set age = 31, name = "alex" where id = 1;
         this->type = UPDATE;
     } else if (sv.starts_with("delete")) {
         // delete from xxx where id = 1;

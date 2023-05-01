@@ -8,15 +8,15 @@
 #include <vector>
 
 enum DataType {
-    INT,
-    DOUBLE,
-    CHAR32
+    INT, DOUBLE, CHAR32
 };
 
 enum CmpType {
-    EQ,
-    GT,
-    LT
+    EQ, GT, LT
+};
+
+enum ConLogic {
+    AND, OR
 };
 
 class Column {
