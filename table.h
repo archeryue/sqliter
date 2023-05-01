@@ -15,7 +15,7 @@ enum CmpType {
     EQ, GT, LT
 };
 
-enum ConLogic {
+enum CondLogic {
     AND, OR
 };
 
