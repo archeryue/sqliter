@@ -8,7 +8,9 @@
 
 enum PrepareResult {
     PREPARE_SUCCESS,
-    PREPARE_UNRECOGNIZED
+    PREPARE_UNRECOGNIZED,
+    PREPARE_SYNTAX_ERROR,
+    PREPARE_TABLE_NOT_FOUND
 };
 
 enum StatementType {
@@ -22,10 +24,16 @@ public:
     StatementType Type();
     Table* _Table();
     PrepareResult Prepare(const std::string& input);
+    const std::vector<std::string>& Values() const;
+    const std::vector<Condition>& Conditions() const;
 private:
     std::string src;
     StatementType type;
     Table* table;
+    std::vector<std::string> values;
+    std::vector<Condition> conditions;
+    std::vector<std::string> ParseValues(const std::string& values_str);
+    std::vector<Condition> ParseWhereClause(const std::string& where_clause);
 };
 
 #endif

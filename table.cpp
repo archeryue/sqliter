@@ -2,6 +2,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <unordered_map>
 
 std::string_view Column::Name() const {
     return this->name;
@@ -52,4 +53,42 @@ std::string_view Table::Name() {
 
 const std::vector<Column>& Table::Columns() {
     return this->columns;
+}
+
+// Add this static member to store tables
+static std::unordered_map<std::string, std::unique_ptr<Table>> tables;
+
+void LoadTables() {
+    // TODO: load tables from disk
+    // After loading each table, call AddTable to add it to memory
+}
+
+Table* GetTable(const std::string& name) {
+    auto it = tables.find(name);
+    if (it != tables.end()) {
+        return it->second.get();
+    }
+    return nullptr;
+}
+
+void AddTable(Table* table) {
+    if (table) {
+        tables[std::string(table->Name())] = std::unique_ptr<Table>(table);
+    }
+}
+
+std::string Condition::GetColumnName() const {
+    return this->column_name;
+}
+
+CmpType Condition::GetCmpType() const {
+    return this->cmp_type;
+}
+
+std::string Condition::GetCmpVal() const {
+    return this->cmp_val;
+}
+
+CondLogic Condition::GetLogic() const {
+    return this->logic;
 }

@@ -1,2 +1,5 @@
 build/
 .vim/
+.vscode/
+CMakeFiles/
+CMakeCache.txt

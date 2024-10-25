@@ -50,11 +50,26 @@ private:
 };
 
 class Condition {
+public:
+    Condition(Table* table, const std::string& column_name, CmpType cmp_type, const std::string& cmp_val, CondLogic logic)
+        : table(table), column_name(column_name), cmp_type(cmp_type), cmp_val(cmp_val), logic(logic) {}
+
+    // Add getters if needed
+    std::string GetColumnName() const;
+    CmpType GetCmpType() const;
+    std::string GetCmpVal() const;
+    CondLogic GetLogic() const;
+
 private:
     Table* table;
-    std::size_t column_idx;
+    std::string column_name;
     CmpType cmp_type;
     std::string cmp_val;
+    CondLogic logic;
 };
+
+void LoadTables();
+Table* GetTable(const std::string& name);
+void AddTable(Table* table);
 
 #endif

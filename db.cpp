@@ -39,28 +39,37 @@ CommandResult DoCommand(std::string& input) {
 
 void ExecuteStatement(Statement& stmt) {
     switch (stmt.Type()) {
-    case CREATE: 
-        {
+        case CREATE: {
             std::cout << "create " << stmt._Table()->Name() << " ";
             const std::vector<Column>& columns = stmt._Table()->Columns();
-            std::for_each(columns.cbegin(), columns.cend(), [](auto& e) {std::cout << e.Name() << " ";});
+            std::for_each(columns.cbegin(), columns.cend(),
+                          [](auto& e) { std::cout << e.Name() << " "; });
             std::cout << std::endl;
-        }
-        break;
-    case INSERT:
-        std::cout << "insert xxx" << std::endl;
-        break;
-    case SELECT:
-        std::cout << "select xxx" << std::endl;
-        break;
-    case UPDATE:
-        std::cout << "update xxx" << std::endl;
-        break;
-    case DELETE:
-        std::cout << "delete xxx" << std::endl;
-        break;
-    default:
-        std::cout << "error." << std::endl;
+            AddTable(stmt._Table());
+        } break;
+        case INSERT: {
+            std::cout << "insert " << stmt._Table()->Name() << " ";
+            const std::vector<std::string>& values = stmt.Values();
+            std::for_each(values.cbegin(), values.cend(),
+                          [](auto& e) { std::cout << e << " "; });
+            std::cout << std::endl;
+        } break;
+        case SELECT: {
+            std::cout << "select " << stmt._Table()->Name() << " ";
+            const std::vector<Condition>& conditions = stmt.Conditions();
+            std::for_each(conditions.cbegin(), conditions.cend(),
+                          [](auto& e) { std::cout << e.GetColumnName() << " " 
+                          << e.GetCmpType() << " " << e.GetCmpVal() << " " << e.GetLogic() << " "; });
+            std::cout << std::endl;
+        } break;
+        case UPDATE:
+            std::cout << "update xxx" << std::endl;
+            break;
+        case DELETE:
+            std::cout << "delete xxx" << std::endl;
+            break;
+        default:
+            std::cout << "error." << std::endl;
     }
 }
 
